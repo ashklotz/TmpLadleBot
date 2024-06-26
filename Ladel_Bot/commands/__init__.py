@@ -1,0 +1,2 @@
+from .rotate_random_color_role import rotate_random_color_role
+from .respond_greeting import respond_greeting
