@@ -22,12 +22,12 @@ class LadelBot(commands.Bot):
             await interaction.response.send_message("Color changed!", ephemeral=True)
 
         @self.tree.command(
-            name="change_color",
-            description="Manually changes the color of 'Random Color' role",
+            name="get_greeted",
+            description="Greets you!",
             guild=TMP_GUILD,
         )
-        async def respond_hello(interaction: discord.Interaction):
-            await ladel_commands
+        async def respond_greeting(interaction: discord.Interaction):
+            await ladel_commands.respond_greeting(interaction)
 
     async def on_ready(self):
         await self.tree.sync(guild=TMP_GUILD)
