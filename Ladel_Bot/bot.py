@@ -5,17 +5,17 @@ from discord.ext import tasks, commands
 
 import commands as ladel_commands, environment
 
-TMP_GUILD = discord.Object(id=environment.GUILD_ID)
-
 
 class LadelBot(commands.Bot):
+    TMP_GUILD = discord.Object(id=environment.GUILD_ID)
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
         @self.tree.command(
             name="change_color",
             description="Manually changes the color of 'Random Color' role",
-            guild=TMP_GUILD,
+            guild=self.TMP_GUILD,
         )
         async def rotate_random_color_role(interaction: discord.Interaction):
             await ladel_commands.rotate_random_color_role(interaction.guild, True)
@@ -24,13 +24,13 @@ class LadelBot(commands.Bot):
         @self.tree.command(
             name="get_greeted",
             description="Greets you!",
-            guild=TMP_GUILD,
+            guild=self.TMP_GUILD,
         )
         async def respond_greeting(interaction: discord.Interaction):
             await ladel_commands.respond_greeting(interaction)
 
     async def on_ready(self):
-        await self.tree.sync(guild=TMP_GUILD)
+        await self.tree.sync(guild=self.TMP_GUILD)
         print(f"{self.user} ready")
 
     async def on_message(self, message: discord.Message):
@@ -41,11 +41,3 @@ class LadelBot(commands.Bot):
     async def task_rotate_random_color_role(self):
         print("task_rotate_random_color_role running")
         await ladel_commands.rotate_random_color_role(self)
-
-
-intents = discord.Intents.default()
-intents.message_content = True
-bot = LadelBot(intents=intents, command_prefix="/")
-
-
-bot.run(environment.DISCORD_KEY)
