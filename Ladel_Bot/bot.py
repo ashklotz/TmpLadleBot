@@ -23,11 +23,13 @@ class LadelBot(commands.Bot):
 
         @self.tree.command(
             name="get_greeted",
-            description="Greets you!",
+            description="Sends a random greeting to another user!",
             guild=self.TMP_GUILD,
         )
-        async def respond_greeting(interaction: discord.Interaction):
-            await ladel_commands.respond_greeting(interaction)
+        async def respond_greeting(
+            interaction: discord.Interaction, user: discord.User = None
+        ):
+            await ladel_commands.respond_greeting(interaction, user)
 
     async def on_ready(self):
         await self.tree.sync(guild=self.TMP_GUILD)
@@ -37,7 +39,7 @@ class LadelBot(commands.Bot):
         if message.author == self.user:
             return
 
-    @tasks.loop(minutes=45)  # task runs every 45 mins
+    @tasks.loop(minutes=10)  # task runs every 45 mins
     async def task_rotate_random_color_role(self):
         print("task_rotate_random_color_role running")
         await ladel_commands.rotate_random_color_role(self)
