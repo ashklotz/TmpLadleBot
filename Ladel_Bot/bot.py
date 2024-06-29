@@ -18,8 +18,9 @@ class LadelBot(commands.Bot):
             guild=self.TMP_GUILD,
         )
         async def rotate_random_color_role(interaction: discord.Interaction):
-            print(f"{interaction.user.display_name} updated Random Color")
-            await ladel_commands.rotate_random_color_role(interaction.guild, True)
+            await ladel_commands.rotate_random_color_role(
+                interaction.guild, interaction.user
+            )
             await interaction.response.send_message("Color changed!", ephemeral=True)
 
         @self.tree.command(
@@ -33,14 +34,25 @@ class LadelBot(commands.Bot):
             await ladel_commands.respond_greeting(interaction, user)
 
     async def on_ready(self):
+        print(f"{self.user} syncing command tree...")
         await self.tree.sync(guild=self.TMP_GUILD)
+        print(f"{self.user} starting tasks...")
+        self.start_tasks()
         print(f"{self.user} ready")
 
     async def on_message(self, message: discord.Message):
         if message.author == self.user:
             return
 
-    @tasks.loop(seconds=30)  # task runs every 45 mins
+    def start_tasks(self):
+        tasks = [
+            self.task_rotate_random_color_role,
+        ]
+        for task in tasks:
+            task.start()
+
+    @tasks.loop(minutes=15)
     async def task_rotate_random_color_role(self):
-        print("task_rotate_random_color_role running")
-        await ladel_commands.rotate_random_color_role(self)
+        await ladel_commands.rotate_random_color_role(
+            self.get_guild(environment.GUILD_ID)
+        )

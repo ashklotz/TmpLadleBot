@@ -6,9 +6,13 @@ import environment
 
 
 async def respond_greeting(interaction: discord.Interaction, user: discord.User):
+    print(
+        f"{interaction.user.display_name} used get_greeted @ {user.display_name if user else 'None'}"
+    )
     user_mention_str = f" {user.mention}" if user else ""
     greetings = {
         f"Hello{user_mention_str}!": enums.GreetingRarity.COMMON,
+        f"<:wave_frog:1253882161027878992>{user_mention_str}": enums.GreetingRarity.COMMON,
         f"Hey there{user_mention_str}": enums.GreetingRarity.COMMON,
         f"Hiya{user_mention_str}": enums.GreetingRarity.COMMON,
         f"Heyo{user_mention_str}": enums.GreetingRarity.COMMON,
