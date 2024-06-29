@@ -1,7 +1,7 @@
 from enum import Enum
 
 
-class GreetingRarity(Enum):
+class GreetingRarity:
     COMMON = 100
     UNCOMMON = 80
     RARE = 50
