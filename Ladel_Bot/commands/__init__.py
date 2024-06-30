@@ -1,2 +1,3 @@
 from .rotate_random_color_role import rotate_random_color_role
 from .respond_greeting import respond_greeting
+from .check_not_valid_message import respond_not_valid_message

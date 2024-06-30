@@ -1,5 +1,3 @@
-import random
-
 import discord
 from discord.ext import tasks, commands
 
@@ -43,6 +41,8 @@ class LadelBot(commands.Bot):
     async def on_message(self, message: discord.Message):
         if message.author == self.user:
             return
+
+        await ladel_commands.respond_not_valid_message(message)
 
     def start_tasks(self):
         tasks = [
