@@ -39,6 +39,14 @@ class LadelBot(commands.Bot):
         async def rock_paper_scissors(interaction: discord.Interaction, choice: str):
             await ladel_commands.rock_paper_scissors(interaction, choice)
 
+        @self.tree.command(
+            name="roll_dice",
+            description="Roll some dice formatted '#d#', default rolls 1d6",
+            guild=self.TMP_GUILD,
+        )
+        async def roll_dice(interaction: discord.Interaction, dice: str):
+            await ladel_commands.roll_dice(interaction, dice)
+
     async def on_ready(self):
         print(f"{self.user} syncing command tree...")
         await self.tree.sync(guild=self.TMP_GUILD)
