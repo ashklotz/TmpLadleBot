@@ -59,6 +59,7 @@ class LadelBot(commands.Bot):
             return
 
         await ladel_commands.respond_not_valid_message(message)
+        await ladel_commands.colon_three(message)
 
     def start_tasks(self):
         tasks = [
