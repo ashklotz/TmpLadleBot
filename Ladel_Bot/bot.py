@@ -31,6 +31,14 @@ class LadelBot(commands.Bot):
         ):
             await ladel_commands.respond_greeting(interaction, user)
 
+        @self.tree.command(
+            name="rps",
+            description="Play rock-paper-scissors with me!",
+            guild=self.TMP_GUILD,
+        )
+        async def rock_paper_scissors(interaction: discord.Interaction, choice: str):
+            await ladel_commands.rock_paper_scissors(interaction, choice)
+
     async def on_ready(self):
         print(f"{self.user} syncing command tree...")
         await self.tree.sync(guild=self.TMP_GUILD)
