@@ -7,7 +7,7 @@ async def rock_paper_scissors(interaction: discord.Interaction, choice: str):
     choice = choice.lower()
     if choice not in {"rock", "paper", "scissors"}:
         await interaction.response.send_message(
-            f"{choice} isn't an option, quick tryna cheat!"
+            f"{choice} isn't an option, quick tryna cheat!", ephemeral=True
         )
     rps_dict = {
         "rock": ["scissors", "rock", "paper"],
