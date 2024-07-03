@@ -32,7 +32,7 @@ class LadelBot(commands.Bot):
             await ladel_commands.respond_greeting(interaction, user)
 
         @self.tree.command(
-            name="rps",
+            name="rock_paper_scissors",
             description="Play rock-paper-scissors with me!",
             guild=self.TMP_GUILD,
         )
