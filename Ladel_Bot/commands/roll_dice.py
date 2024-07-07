@@ -16,12 +16,12 @@ async def roll_dice(interaction: discord.Interaction, dice: str):
 
     response = f"rolled {dice}\n"
     if len(dice_results) == 1:
-        response += dice_results[0]
+        response += str(dice_results[0])
     else:
         response += (
             f"{' + '.join([str(r) for r in dice_results])} = {sum(dice_results)}"
         )
-    if len(response > 2000):
+    if len(response) > 2000:
         interaction.response.send_message(
             "Too much dice to roll, I can't handle that.", ephemeral=True
         )
