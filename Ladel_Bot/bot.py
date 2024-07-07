@@ -73,3 +73,14 @@ class LadelBot(commands.Bot):
         await ladel_commands.rotate_random_color_role(
             self.get_guild(environment.GUILD_ID)
         )
+
+
+def start_bot(request=None):
+    intents = discord.Intents.default()
+    intents.message_content = True
+    bot = LadelBot(intents=intents, command_prefix="/")
+
+    bot.run(environment.DISCORD_KEY)
+
+
+start_bot()
