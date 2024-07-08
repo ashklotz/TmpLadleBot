@@ -9,7 +9,8 @@ class Reminder(Base):
     __tablename__ = "reminder"
 
     id: Mapped[int] = mapped_column(primary_key=True)
-    user_id: Mapped[int]
+    user_id: Mapped[str]
+    channel_id: Mapped[str]
     remind_date: Mapped[datetime.datetime]
     message: Mapped[str]
-    complete: Mapped[bool] = False
+    complete: Mapped[bool] = mapped_column(default=False)
