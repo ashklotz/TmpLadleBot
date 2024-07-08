@@ -1,8 +1,6 @@
 import discord
-from sqlalchemy import create_engine
 from discord.ext import tasks, commands
 
-from models import Base
 import commands as ladel_commands, environment
 
 
@@ -49,6 +47,16 @@ class LadelBot(commands.Bot):
         async def roll_dice(interaction: discord.Interaction, dice: str):
             await ladel_commands.roll_dice(interaction, dice)
 
+        @self.tree.command(
+            name="set_reminder",
+            description="Set a reminder",
+            guild=self.TMP_GUILD,
+        )
+        async def set_reminder(
+            interaction: discord.Interaction, hours: int, message: str
+        ):
+            await ladel_commands.set_reminder(interaction, hours, message)
+
     async def on_ready(self):
         print(f"{self.user} syncing command tree...")
         await self.tree.sync(guild=self.TMP_GUILD)
@@ -75,27 +83,3 @@ class LadelBot(commands.Bot):
         await ladel_commands.rotate_random_color_role(
             self.get_guild(environment.GUILD_ID)
         )
-
-
-def start_bot(request=None):
-    intents = discord.Intents.default()
-    intents.message_content = True
-    bot = LadelBot(intents=intents, command_prefix="/")
-
-    bot.run(environment.DISCORD_KEY)
-
-
-engine = create_engine(
-    "postgresql+psycopg2://%s:%s@%s:%s/%s"
-    % (
-        environment.DBUSER,
-        environment.DBPASS,
-        environment.DBHOST,
-        environment.DBPORT,
-        environment.DBNAME,
-    ),
-)
-Base.metadata.create_all(engine)
-print("DB engine started")
-
-start_bot()

@@ -1,1 +1,1 @@
-python3 ./ladel_bot/bot.py
+python3 ./ladel_bot/start.py
