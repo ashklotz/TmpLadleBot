@@ -1,6 +1,8 @@
 import discord
+from sqlalchemy import create_engine
 from discord.ext import tasks, commands
 
+from models import Base
 import commands as ladel_commands, environment
 
 
@@ -82,5 +84,18 @@ def start_bot(request=None):
 
     bot.run(environment.DISCORD_KEY)
 
+
+engine = create_engine(
+    "postgresql+psycopg2://%s:%s@%s:%s/%s"
+    % (
+        environment.DBUSER,
+        environment.DBPASS,
+        environment.DBHOST,
+        environment.DBPORT,
+        environment.DBNAME,
+    ),
+)
+Base.metadata.create_all(engine)
+print("DB engine started")
 
 start_bot()
