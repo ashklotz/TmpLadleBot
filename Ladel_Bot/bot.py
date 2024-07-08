@@ -68,8 +68,8 @@ class LadelBot(commands.Bot):
         if message.author == self.user:
             return
 
-        await ladel_commands.respond_not_valid_message(message)
-        await ladel_commands.colon_three(message)
+        await ladel_commands.messages.respond_not_valid_message(message)
+        await ladel_commands.messages.colon_three(message)
 
     def start_tasks(self):
         tasks = [
@@ -80,6 +80,10 @@ class LadelBot(commands.Bot):
 
     @tasks.loop(minutes=15)
     async def task_rotate_random_color_role(self):
-        await ladel_commands.rotate_random_color_role(
+        await ladel_commands.tasks.rotate_random_color_role(
             self.get_guild(environment.GUILD_ID)
         )
+
+    @tasks.loop(minutes=5)
+    async def task_send_reminders(self):
+        await ladel_commands.tasks.send_reminders()
