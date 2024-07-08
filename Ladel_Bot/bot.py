@@ -74,6 +74,7 @@ class LadelBot(commands.Bot):
     def start_tasks(self):
         tasks = [
             self.task_rotate_random_color_role,
+            self.task_send_reminders,
         ]
         for task in tasks:
             task.start()
@@ -86,4 +87,4 @@ class LadelBot(commands.Bot):
 
     @tasks.loop(minutes=5)
     async def task_send_reminders(self):
-        await ladel_commands.tasks.send_reminders()
+        await ladel_commands.tasks.send_reminders(self)
