@@ -16,7 +16,7 @@ class LadelBot(commands.Bot):
             guild=self.TMP_GUILD,
         )
         async def rotate_random_color_role(interaction: discord.Interaction):
-            await ladel_commands.rotate_random_color_role(
+            await ladel_commands.tasks.rotate_random_color_role(
                 interaction.guild, interaction.user
             )
             await interaction.response.send_message("Color changed!", ephemeral=True)

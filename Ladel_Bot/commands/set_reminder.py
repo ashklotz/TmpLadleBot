@@ -10,7 +10,6 @@ async def set_reminder(interaction: discord.Interaction, hours: int, message: st
         reminder = Reminder(
             user_id=interaction.user.id,
             channel_id=interaction.channel_id,
-            guild_id=interaction.guild_id,
             remind_date=datetime.datetime.now() + datetime.timedelta(hours=hours),
             message=message,
         )
