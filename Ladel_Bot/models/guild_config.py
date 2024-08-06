@@ -8,4 +8,5 @@ class GuildConfig(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True)
     guild_id: Mapped[int]
-    log_channel_id: Mapped[int]
+    config_type: Mapped[str]  # enums.GuildConfig
+    config_id: Mapped[int]

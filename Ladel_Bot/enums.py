@@ -1,4 +1,4 @@
-from enum import Enum
+from enum import Enum, auto, StrEnum
 
 
 class GreetingRarity:
@@ -9,6 +9,12 @@ class GreetingRarity:
     UNIQUE = 5
 
 
-class NotValidStr(Enum):
+class NotValidStr(StrEnum):
     nv_1 = "i'm not valid"
     nv_2 = "i am not valid"
+
+
+class GuildConfig(StrEnum):
+    log_channel = auto()
+    color_rotation_role = auto()
+    moderator_role = auto()
