@@ -22,7 +22,7 @@ def log_action(guild_id: int, messsage: str):
         # TODO the rest
 
 
-def update_role(guild_id, role_id, config_type):
+def update_role(guild_id: int, role_id: int, config_type: enums.GuildConfig):
     with Session(environment.DB_ENGINE) as session:
         statement = (
             select(GuildConfig)
