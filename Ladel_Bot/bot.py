@@ -1,7 +1,7 @@
 import discord
 from discord.ext import tasks, commands
 
-import commands as ladel_commands, environment
+import commands as ladel_commands, environment, utils
 
 
 class LadelBot(commands.Bot):
@@ -10,6 +10,9 @@ class LadelBot(commands.Bot):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
+        ###############################
+        # FUN COMMANDS
+        ###############################
         @self.tree.command(
             name="change_color",
             description="Manually changes the random color role",
@@ -57,47 +60,91 @@ class LadelBot(commands.Bot):
         ):
             await ladel_commands.general.set_reminder(interaction, hours, message)
 
+        ###############################
+        # ADMIN COMMANDS
+        ###############################
         @self.tree.command(
             name="set_mod_role",
             description="Sets the role intended for server moderators",
             guild=self.TMP_GUILD,
         )
-        @commands.has_permissions(administrator=True)
         async def set_mod_role(interaction: discord.Interaction, role: discord.Role):
-            await ladel_commands.admin.set_mod_role(interaction, role)
+            await utils.call_admin_command(
+                ladel_commands.admin.set_mod_role, interaction, interaction, role
+            )
+
+        @self.tree.command(
+            name="set_verified_role",
+            description="Set the role intended for verified users",
+            guild=self.TMP_GUILD,
+        )
+        async def set_verified_role(
+            interaction: discord.Interaction, role: discord.Role
+        ):
+            await utils.call_admin_command(
+                ladel_commands.admin.set_verified_role,
+                interaction,
+                interaction,
+                role,
+            )
+
+        @self.tree.command(
+            name="set_unverified_role",
+            description="Set the role intended for unverified users",
+            guild=self.TMP_GUILD,
+        )
+        async def set_unverified_role(
+            interaction: discord.Interaction, role: discord.Role
+        ):
+            await utils.call_admin_command(
+                ladel_commands.admin.set_unverified_role,
+                interaction,
+                interaction,
+                role,
+            )
 
         @self.tree.command(
             name="set_random_color_role",
             description="Sets the role intended for rotating random colors",
             guild=self.TMP_GUILD,
         )
-        @commands.has_permissions(administrator=True)
         async def set_random_color_role(
             interaction: discord.Interaction, role: discord.Role
         ):
-            await ladel_commands.admin.set_random_color_role(interaction, role)
+            await utils.call_admin_command(
+                ladel_commands.admin.set_random_color_role,
+                interaction,
+                interaction,
+                role,
+            )
 
         @self.tree.command(
             name="set_log_channel",
             description="Sets the channel intended for logging actions",
             guild=self.TMP_GUILD,
         )
-        @commands.has_permissions(administrator=True)
         async def set_log_channel(
             interaction: discord.Interaction, channel: discord.TextChannel
         ):
-            await ladel_commands.admin.set_log_channel(interaction, channel)
+            await utils.call_admin_command(
+                ladel_commands.admin.set_log_channel,
+                interaction,
+                interaction,
+                channel,
+            )
 
         @self.tree.command(
             name="verify_user",
             description="Verifies and allows a user into the rest of the server",
             guild=self.TMP_GUILD,
         )
-        @commands.has_permissions(administrator=True)
-        async def set_log_channel(
-            interaction: discord.Interaction, channel: discord.TextChannel
-        ):
-            await ladel_commands.admin.set_log_channel(interaction, channel)
+        async def verify_user(interaction: discord.Interaction, member: discord.Member):
+            await utils.call_admin_command(
+                ladel_commands.admin.verify_user,
+                interaction,
+                interaction,
+                member,
+            )
 
     async def on_ready(self):
         print(f"{self.user} syncing command tree...")

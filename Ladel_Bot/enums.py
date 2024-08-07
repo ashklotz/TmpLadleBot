@@ -15,6 +15,12 @@ class NotValidStr(StrEnum):
 
 
 class GuildConfig(StrEnum):
+    # CHANNELS
     log_channel = auto()
+
+    # ROLES
     color_rotation_role = auto()
     moderator_role = auto()
+    unverified_role = auto()
+    verified_role = auto()
+    welcome_channel = auto()

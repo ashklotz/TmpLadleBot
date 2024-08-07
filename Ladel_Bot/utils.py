@@ -59,3 +59,11 @@ def update_channel(guild_id: int, channel_id: int, config_type: enums.GuildConfi
             config.config_id = channel_id
         session.add(config)
         session.commit()
+
+
+async def call_admin_command(command_func, interaction, *args):
+    if not interaction.user.guild_permissions.administrator:
+        return await interaction.response.send_message(
+            "You do not have permission to use this command", ephemeral=True
+        )
+    await command_func(*args)
