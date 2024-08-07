@@ -57,6 +57,48 @@ class LadelBot(commands.Bot):
         ):
             await ladel_commands.general.set_reminder(interaction, hours, message)
 
+        @self.tree.command(
+            name="set_mod_role",
+            description="Sets the role intended for server moderators",
+            guild=self.TMP_GUILD,
+        )
+        @commands.has_permissions(administrator=True)
+        async def set_mod_role(interaction: discord.Interaction, role: discord.Role):
+            await ladel_commands.admin.set_mod_role(interaction, role)
+
+        @self.tree.command(
+            name="set_random_color_role",
+            description="Sets the role intended for rotating random colors",
+            guild=self.TMP_GUILD,
+        )
+        @commands.has_permissions(administrator=True)
+        async def set_random_color_role(
+            interaction: discord.Interaction, role: discord.Role
+        ):
+            await ladel_commands.admin.set_random_color_role(interaction, role)
+
+        @self.tree.command(
+            name="set_log_channel",
+            description="Sets the channel intended for logging actions",
+            guild=self.TMP_GUILD,
+        )
+        @commands.has_permissions(administrator=True)
+        async def set_log_channel(
+            interaction: discord.Interaction, channel: discord.TextChannel
+        ):
+            await ladel_commands.admin.set_log_channel(interaction, channel)
+
+        @self.tree.command(
+            name="verify_user",
+            description="Verifies and allows a user into the rest of the server",
+            guild=self.TMP_GUILD,
+        )
+        @commands.has_permissions(administrator=True)
+        async def set_log_channel(
+            interaction: discord.Interaction, channel: discord.TextChannel
+        ):
+            await ladel_commands.admin.set_log_channel(interaction, channel)
+
     async def on_ready(self):
         print(f"{self.user} syncing command tree...")
         await self.tree.sync(guild=self.TMP_GUILD)
