@@ -5,7 +5,12 @@ import environment
 from models import Reminder
 
 
-async def set_reminder(interaction: discord.Interaction, hours: int, message: str):
+async def set_reminder(interaction: discord.Interaction, hours: float, message: str):
+    if "@everyone" in message:
+        await interaction.response.send_message(
+            f"Sorry, you can't use @everyone", ephemeral=True
+        )
+        return
     with Session(environment.DB_ENGINE) as session:
         reminder = Reminder(
             user_id=interaction.user.id,
