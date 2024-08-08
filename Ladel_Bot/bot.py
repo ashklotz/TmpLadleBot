@@ -56,7 +56,7 @@ class LadelBot(commands.Bot):
             guild=self.TMP_GUILD,
         )
         async def set_reminder(
-            interaction: discord.Interaction, hours: int, message: str
+            interaction: discord.Interaction, hours: float, message: str
         ):
             # TODO: This needs to suppress all mentions in the user entered message
             # maybe just remove `@` from the message?
