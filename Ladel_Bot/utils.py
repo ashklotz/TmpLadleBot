@@ -61,8 +61,23 @@ def update_channel(guild_id: int, channel_id: int, config_type: enums.GuildConfi
         session.commit()
 
 
-async def call_admin_command(command_func, interaction, *args):
-    if not interaction.user.guild_permissions.administrator:
+async def call_admin_command(
+    command_func, interaction: discord.Interaction, *args, allow_moderator_role=False
+):
+    is_moderator_user = False
+    if allow_moderator_role:
+        with Session(environment.DB_ENGINE) as session:
+            statement = (
+                select(GuildConfig)
+                .where(GuildConfig.guild_id == interaction.guild_id)
+                .where(GuildConfig.config_type == enums.GuildConfig.moderator_role)
+            )
+            config = session.scalar(statement)
+            if config:
+                role_id = config.config_id
+                user_role_ids = [r.id for r in interaction.user.roles]
+                is_moderator_user = role_id in user_role_ids
+    if not (interaction.user.guild_permissions.administrator or is_moderator_user):
         return await interaction.response.send_message(
             "You do not have permission to use this command", ephemeral=True
         )

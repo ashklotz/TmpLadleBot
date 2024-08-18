@@ -12,20 +12,6 @@ async def verify_user(interaction: discord.Interaction, member: discord.Member):
         statement = (
             select(GuildConfig)
             .where(GuildConfig.guild_id == interaction.guild.id)
-            .where(GuildConfig.config_type == enums.GuildConfig.moderator_role)
-        )
-        mod_role_id = session.scalar(statement)
-        mod_role = interaction.guild.get_role(mod_role_id)
-        if (
-            mod_role and mod_role not in interaction.user.roles
-        ) or not interaction.user.guild_permissions.administrator:
-            return await interaction.response.send_message(
-                "You do not have permission to verify users"
-            )
-
-        statement = (
-            select(GuildConfig)
-            .where(GuildConfig.guild_id == interaction.guild.id)
             .where(GuildConfig.config_type == enums.GuildConfig.unverified_role)
         )
         unverified_role_config = session.scalar(statement)

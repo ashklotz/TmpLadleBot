@@ -147,6 +147,7 @@ class LadelBot(commands.Bot):
                 interaction,
                 interaction,
                 member,
+                allow_moderator_role=True,
             )
 
     async def on_ready(self):
