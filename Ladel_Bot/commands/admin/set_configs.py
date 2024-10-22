@@ -66,4 +66,24 @@ async def set_message(
     message_type: enums.MessageConfig,
     message: str,
 ):
-    pass
+    with Session(environment.DB_ENGINE) as session:
+        statement = (
+            select(MessageConfig)
+            .where(MessageConfig.guild_id == interaction.guild.id)
+            .where(MessageConfig.config_type == message_type)
+        )
+        config = session.scalar(statement)
+        if not config:
+            config = MessageConfig(
+                guild_id=interaction.guild.id,
+                config_type=message_type,
+                message=message,
+            )
+        else:
+            config.message = message
+        session.add(config)
+        session.commit()
+
+    log_message = f"{interaction.user.name} updated {message_type.value} to `{message}`"
+    await utils.log_action(interaction.guild, log_message)
+    await interaction.response.send_message(log_message, ephemeral=True)
