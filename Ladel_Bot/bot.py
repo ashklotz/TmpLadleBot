@@ -66,7 +66,7 @@ class LadelBot(commands.Bot):
         ###############################
         @self.tree.command(
             name="configure_roles",
-            description="configure different roles in your server",
+            description="Configure different roles in your server",
             guild=self.TMP_GUILD,
         )
         @discord.app_commands.choices(
@@ -92,7 +92,7 @@ class LadelBot(commands.Bot):
 
         @self.tree.command(
             name="configure_channels",
-            description="configure different channels in your server",
+            description="Configure different channels in your server",
             guild=self.TMP_GUILD,
         )
         @discord.app_commands.choices(
@@ -118,7 +118,7 @@ class LadelBot(commands.Bot):
 
         @self.tree.command(
             name="configure_messages",
-            description="configure different messages in your server",
+            description="Configure different messages in your server. Include [user] to mention the user where applicable",
             guild=self.TMP_GUILD,
         )
         @discord.app_commands.choices(
