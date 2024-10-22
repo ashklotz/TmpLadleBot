@@ -1,3 +1,3 @@
 from .base_model import Base
 from .reminder import Reminder
-from .guild_config import GuildConfig
+from .configs import RoleConfig, ChannelConfig, MessageConfig

@@ -1,7 +1,7 @@
 import discord
 from discord.ext import tasks, commands
 
-import commands as ladel_commands, environment, utils
+import commands as ladel_commands, environment, utils, enums
 
 
 class LadelBot(commands.Bot):
@@ -67,73 +67,81 @@ class LadelBot(commands.Bot):
         # ADMIN COMMANDS
         ###############################
         @self.tree.command(
-            name="set_mod_role",
-            description="Sets the role intended for server moderators",
+            name="configure_roles",
+            description="configure different roles in your server",
             guild=self.TMP_GUILD,
         )
-        async def set_mod_role(interaction: discord.Interaction, role: discord.Role):
-            await utils.call_admin_command(
-                ladel_commands.admin.set_mod_role, interaction, interaction, role
-            )
-
-        @self.tree.command(
-            name="set_verified_role",
-            description="Set the role intended for verified users",
-            guild=self.TMP_GUILD,
+        @discord.app_commands.choices(
+            role_type=[
+                discord.app_commands.Choice(name=s.value, value=s)
+                for s in enums.RoleConfig
+            ]
         )
-        async def set_verified_role(
-            interaction: discord.Interaction, role: discord.Role
+        async def configure_roles(
+            interaction: discord.Interaction,
+            role_type: enums.RoleConfig,
+            role: discord.Role,
         ):
+            allow_moderator = role_type in [enums.RoleConfig.color_rotation_role]
             await utils.call_admin_command(
-                ladel_commands.admin.set_verified_role,
+                ladel_commands.admin.set_role,
                 interaction,
                 interaction,
+                role_type,
                 role,
+                allow_moderator_role=allow_moderator,
             )
 
         @self.tree.command(
-            name="set_unverified_role",
-            description="Set the role intended for unverified users",
+            name="configure_channels",
+            description="configure different channels in your server",
             guild=self.TMP_GUILD,
         )
-        async def set_unverified_role(
-            interaction: discord.Interaction, role: discord.Role
-        ):
-            await utils.call_admin_command(
-                ladel_commands.admin.set_unverified_role,
-                interaction,
-                interaction,
-                role,
-            )
-
-        @self.tree.command(
-            name="set_random_color_role",
-            description="Sets the role intended for rotating random colors",
-            guild=self.TMP_GUILD,
+        @discord.app_commands.choices(
+            channel_type=[
+                discord.app_commands.Choice(name=s.value, value=s)
+                for s in enums.ChannelConfig
+            ]
         )
-        async def set_random_color_role(
-            interaction: discord.Interaction, role: discord.Role
+        async def configure_channels(
+            interaction: discord.Interaction,
+            channel_type: enums.ChannelConfig,
+            channel: discord.TextChannel,
         ):
+            allow_moderator = channel_type in [c.value for c in enums.ChannelConfig]
             await utils.call_admin_command(
-                ladel_commands.admin.set_random_color_role,
+                ladel_commands.admin.set_channel,
                 interaction,
                 interaction,
-                role,
-            )
-
-        @self.tree.command(
-            name="set_log_channel",
-            description="Sets the channel intended for logging actions",
-            guild=self.TMP_GUILD,
-        )
-        async def set_log_channel(
-            interaction: discord.Interaction, channel: discord.TextChannel
-        ):
-            await utils.call_admin_command(
-                ladel_commands.admin.set_log_channel,
-                interaction,
-                interaction,
+                channel_type,
                 channel,
+                allow_moderator_role=allow_moderator,
+            )
+
+        @self.tree.command(
+            name="configure_messages",
+            description="configure different messages in your server",
+            guild=self.TMP_GUILD,
+        )
+        @discord.app_commands.choices(
+            message_type=[
+                discord.app_commands.Choice(name=s.value, value=s)
+                for s in enums.MessageConfig
+            ]
+        )
+        async def configure_messages(
+            interaction: discord.Interaction,
+            message_type: enums.MessageConfig,
+            message: str,
+        ):
+            allow_moderator = message_type in [m.value for m in enums.MessageConfig]
+            await utils.call_admin_command(
+                ladel_commands.admin.set_message,
+                interaction,
+                interaction,
+                message_type,
+                message,
+                allow_moderator_role=allow_moderator,
             )
 
         @self.tree.command(

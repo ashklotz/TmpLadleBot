@@ -14,13 +14,18 @@ class NotValidStr(StrEnum):
     nv_2 = "i am not valid"
 
 
-class GuildConfig(StrEnum):
-    # CHANNELS
-    log_channel = auto()
-
-    # ROLES
+class RoleConfig(StrEnum):
     color_rotation_role = auto()
     moderator_role = auto()
     unverified_role = auto()
     verified_role = auto()
+
+
+class ChannelConfig(StrEnum):
+    log_channel = auto()
     welcome_channel = auto()
+
+
+class MessageConfig(StrEnum):
+    welcome_message = auto()
+    verified_message = auto()
