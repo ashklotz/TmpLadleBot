@@ -58,8 +58,6 @@ class LadelBot(commands.Bot):
         async def set_reminder(
             interaction: discord.Interaction, hours: float, message: str
         ):
-            # TODO: This needs to suppress all mentions in the user entered message
-            # maybe just remove `@` from the message?
             # TODO: also need to implement a way for custom/dynamic time setting rather than integers of hours
             await ladel_commands.general.set_reminder(interaction, hours, message)
 
