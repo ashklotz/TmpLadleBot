@@ -28,4 +28,4 @@ class MessageConfig(Base):
     id: Mapped[int] = mapped_column(primary_key=True)
     guild_id: Mapped[int] = mapped_column(sqlalchemy.BigInteger)
     config_type: Mapped[str]  # enums.MessageConfig
-    message: Mapped[int] = mapped_column(sqlalchemy.BigInteger)
+    message: Mapped[str] = mapped_column(sqlalchemy.String)
