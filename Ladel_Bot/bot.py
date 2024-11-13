@@ -156,6 +156,37 @@ class LadelBot(commands.Bot):
                 allow_moderator_role=True,
             )
 
+        @self.tree.command(
+            name="create_leaderboard",
+            description="create and name leaderboard",
+            guild=self.TMP_GUILD,
+        )
+        async def create_leaderboard(
+            interaction: discord.Interaction, leaderboard_name: str
+        ):
+            await utils.call_admin_command(
+                ladel_commands.admin.create_leaderboard,
+                interaction,
+                interaction,
+                leaderboard_name,
+            )
+
+        @self.tree.command(
+            name="add_points",
+            description="Add points to a user!",
+            guild=self.TMP_GUILD,
+        )
+        async def add_points(
+            interaction: discord.Interaction, member: discord.Member, points: int
+        ):
+            await utils.call_admin_command(
+                ladel_commands.admin.add_points,
+                interaction,
+                interaction,
+                member,
+                points,
+            )
+
     async def on_ready(self):
         print(f"{self.user} syncing command tree...")
         await self.tree.sync(guild=self.TMP_GUILD)

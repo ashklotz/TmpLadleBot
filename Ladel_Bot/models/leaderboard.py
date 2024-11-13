@@ -9,9 +9,11 @@ class Leaderboard(Base):
     __tablename__ = "leaderboard"
 
     id: Mapped[int] = mapped_column(primary_key=True)
-    server_id: Mapped[int]
+    guild_id: Mapped[int] = mapped_column(sqlalchemy.BigInteger)
     name: Mapped[str]
-    date_created: Mapped[sqlalchemy.DateTime] = mapped_column(
+    positive_point_message: Mapped[str]
+    negative_point_message: Mapped[str]
+    date_created: Mapped[datetime.datetime] = mapped_column(
         default=datetime.datetime.now(datetime.timezone.utc)
     )
 
@@ -20,8 +22,9 @@ class LeaderboardUser(Base):
     __tablename__ = "leaderboard_user"
 
     id: Mapped[int] = mapped_column(primary_key=True)
-    user_id: Mapped[int]
-    points: Mapped[int]
-    date_created: Mapped[sqlalchemy.DateTime] = mapped_column(
+    leaderboard_id: Mapped[int]
+    user_id: Mapped[int] = mapped_column(sqlalchemy.BigInteger)
+    points: Mapped[int] = mapped_column(sqlalchemy.BigInteger)
+    date_created: Mapped[datetime.datetime] = mapped_column(
         default=datetime.datetime.now(datetime.timezone.utc)
     )
