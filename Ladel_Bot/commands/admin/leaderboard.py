@@ -37,6 +37,59 @@ async def create_leaderboard(
             )
 
 
+async def check_points(interaction: discord.Interaction, member: discord.Member):
+    with Session(environment.DB_ENGINE) as session:
+        statement = select(Leaderboard).where(
+            Leaderboard.guild_id == interaction.guild_id
+        )
+        leaderboard = session.scalar(statement)
+
+        statement = (
+            select(LeaderboardUser)
+            .where(LeaderboardUser.user_id == member.id)
+            .where(LeaderboardUser.leaderboard_id == leaderboard.id)
+        )
+        leaderboard_user = session.scalar(statement)
+
+        points = leaderboard_user.points if leaderboard_user else 0
+        response_embed = discord.Embed(
+            title=leaderboard.name,
+            description=f"{member.mention} has {points} points",
+        )
+        await interaction.response.send_message(embed=response_embed)
+
+
+async def top_points(interaction: discord.Interaction):
+    MAX_USERS = 10
+    with Session(environment.DB_ENGINE) as session:
+        statement = select(Leaderboard).where(
+            Leaderboard.guild_id == interaction.guild_id
+        )
+        leaderboard = session.scalar(statement)
+
+        statement = (
+            select(LeaderboardUser)
+            .where(LeaderboardUser.leaderboard_id == leaderboard.id)
+            .order_by(LeaderboardUser.points.desc())
+            .limit(MAX_USERS)
+        )
+        leaderboard_users = session.scalars(statement)
+
+        user_list = []
+        for i, leaderboard_user in enumerate(leaderboard_users):
+            member = await interaction.guild.fetch_member(leaderboard_user.user_id)
+            user_list.append(
+                f"#{i+1}. {member.mention} - {leaderboard_user.points} points"
+            )
+
+        await interaction.response.send_message(
+            embed=discord.Embed(
+                title=f"Top {MAX_USERS} {leaderboard.name}",
+                description="\n".join(user_list),
+            )
+        )
+
+
 async def add_points(
     interaction: discord.Interaction, member: discord.Member, points: int
 ):

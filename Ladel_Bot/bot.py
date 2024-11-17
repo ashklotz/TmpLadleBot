@@ -61,6 +61,25 @@ class LadelBot(commands.Bot):
             # TODO: also need to implement a way for custom/dynamic time setting rather than integers of hours
             await ladel_commands.general.set_reminder(interaction, hours, message)
 
+        @self.tree.command(
+            name="check_points",
+            description="check points of yourself or someone else",
+            guild=self.TMP_GUILD,
+        )
+        async def check_points(
+            interaction: discord.Interaction, user: discord.Member = None
+        ):
+            member = user or interaction.user
+            await ladel_commands.admin.check_points(interaction, member)
+
+        @self.tree.command(
+            name="top_points",
+            description="check the top points users",
+            guild=self.TMP_GUILD,
+        )
+        async def top_points(interaction: discord.Interaction):
+            await ladel_commands.admin.top_points(interaction)
+
         ###############################
         # ADMIN COMMANDS
         ###############################

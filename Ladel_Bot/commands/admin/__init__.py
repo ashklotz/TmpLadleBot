@@ -5,4 +5,6 @@ from .leaderboard import (
     add_points,
     reset_points,
     remove_leaderboard,
+    check_points,
+    top_points,
 )
