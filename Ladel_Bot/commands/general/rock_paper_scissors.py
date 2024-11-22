@@ -16,6 +16,10 @@ async def rock_paper_scissors(interaction: discord.Interaction, choice: str):
     }
     choice_list: list = rps_dict[choice]
     ladel_choice_index = random.randint(0, 2)
+    secretRaygun = random.randint(0,1000)
+    if secretRaygun:
+        await interaction.response.send_message(f"I chose a RAYGUN, which OBLITERATES your choice of {choice}!!")
+        return
     match ladel_choice_index:
         case 0:
             response = (
